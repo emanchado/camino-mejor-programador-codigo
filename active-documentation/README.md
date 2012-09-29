@@ -1,19 +1,12 @@
-neverread
-=========
+#Código de ejemplo: Documentación Activa.
 Joaquín Caraballo
 
--------------------------------------------------------------------
-
-Código de ejemplo: Documentación Activa.
-
-Requisitos técnicos
--------------------
+##Requisitos técnicos
 
 * Java (probado con OpenJDK IcedTea7 2.0)
 * Ant (probado con 1.8.2)
 
-Instructions
-------------
+##Instructions
 
 * Descargue las dependencias con:
 
@@ -32,16 +25,15 @@ Instructions
 
 -------------------------------------------------------------------
 
-Code examples: Active Documentation.
+#Code examples: Active Documentation.
+Joaquín Caraballo
 
-Requires
---------
+##Requirements
 
 * Java (tried with OpenJDK IcedTea7 2.0)
 * Ant (tried with 1.8.2)
 
-Instructions
-------------
+##Instructions
 
 * Download the dependencies
 
