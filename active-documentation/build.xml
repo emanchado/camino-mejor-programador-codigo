@@ -104,54 +104,63 @@
     <target name="download-dependencies">
         <sequential>
             <mkdir dir="down"/>
+            <parallel>
+                <sequential>
+                    <get src="http://dist.codehaus.org/jetty/jetty-6.1.26/jetty-6.1.26.zip" dest="down/"
+                         skipexisting="true"/>
+                    <unzip src="down/jetty-6.1.26.zip" dest="down/"/>
+                    <copy file="down/jetty-6.1.26/lib/jetty-6.1.26.jar" todir="libs/jetty"/>
+                    <copy file="down/jetty-6.1.26/lib/jetty-util-6.1.26.jar" todir="libs/jetty"/>
+                    <copy file="down/jetty-6.1.26/lib/servlet-api-2.5-20081211.jar" todir="libs/jetty"/>
+                </sequential>
+                <sequential>
+                    <get src="http://www.concordion.org/dist/1.4.2/concordion-1.4.2.zip" dest="down/"
+                         skipexisting="true"/>
+                    <unzip src="down/concordion-1.4.2.zip" dest="down/" overwrite="false"/>
+                    <copy file="down/concordion-1.4.2/dist/concordion-1.4.2.jar" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/ognl-2.6.9.jar" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/ognl-license.txt" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/xom-1.2.5.jar" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/xom-lgpl.txt" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/xom-license.txt" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/junit-4.8.2.jar" todir="test-libs"/>
+                    <copy file="down/concordion-1.4.2/lib/junit-license.html" todir="test-libs"/>
+                </sequential>
+                <sequential>
+                    <!-- Not copying some files because they don't seem necessary for our application. Not copying
+                    junit-dep-4.10.jar either because we've already copied above junit-4.8.2.jar with concordion. -->
+                    <get src="http://selenium.googlecode.com/files/selenium-java-2.25.0.zip" dest="down"
+                         skipexisting="true"/>
+                    <unzip src="down/selenium-java-2.25.0.zip" dest="down/" overwrite="false"/>
+                    <copy file="down/selenium-2.25.0/selenium-java-2.25.0.jar" todir="test-libs/selenium"/>
+                    <copy file="down/selenium-2.25.0/selenium-java-2.25.0-srcs.jar" todir="test-libs/selenium"/>
 
-            <get src="http://dist.codehaus.org/jetty/jetty-6.1.26/jetty-6.1.26.zip" dest="down/" skipexisting="true"/>
-            <unzip src="down/jetty-6.1.26.zip" dest="down/"/>
-            <copy file="down/jetty-6.1.26/lib/jetty-6.1.26.jar" todir="libs/jetty"/>
-            <copy file="down/jetty-6.1.26/lib/jetty-util-6.1.26.jar" todir="libs/jetty"/>
-            <copy file="down/jetty-6.1.26/lib/servlet-api-2.5-20081211.jar" todir="libs/jetty"/>
+                    <copy file="down/selenium-2.25.0/libs/commons-codec-1.6.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/commons-collections-3.2.1.jar"
+                          todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/commons-io-2.0.1.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/commons-lang-2.6.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/commons-logging-1.1.1.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/cssparser-0.9.5.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/hamcrest-core-1.1.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/hamcrest-library-1.1.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/htmlunit-2.9.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/htmlunit-core-js-2.9.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/httpclient-4.1.3.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/httpcore-4.1.3.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/httpmime-4.1.3.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/nekohtml-1.9.15.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/sac-1.3.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/xalan-2.7.1.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/xercesImpl-2.9.1.jar" todir="test-libs/selenium/libs"/>
 
-            <get src="http://www.concordion.org/dist/1.4.2/concordion-1.4.2.zip" dest="down/" skipexisting="true"/>
-            <unzip src="down/concordion-1.4.2.zip" dest="down/" overwrite="false"/>
-            <copy file="down/concordion-1.4.2/dist/concordion-1.4.2.jar" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/ognl-2.6.9.jar" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/ognl-license.txt" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/xom-1.2.5.jar" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/xom-lgpl.txt" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/xom-license.txt" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/junit-4.8.2.jar" todir="test-libs"/>
-            <copy file="down/concordion-1.4.2/lib/junit-license.html" todir="test-libs"/>
-
-            <!-- Not copying some files that don't seem necessary. Not copying junit-dep-4.10.jar either because
-            we've already copied junit-4.8.2.jar above with concordion. -->
-            <get src="http://selenium.googlecode.com/files/selenium-java-2.25.0.zip" dest="down" skipexisting="true"/>
-            <unzip src="down/selenium-java-2.25.0.zip" dest="down/" overwrite="false"/>
-            <copy file="down/selenium-2.25.0/selenium-java-2.25.0.jar" todir="test-libs/selenium"/>
-            <copy file="down/selenium-2.25.0/selenium-java-2.25.0-srcs.jar" todir="test-libs/selenium"/>
-
-            <copy file="down/selenium-2.25.0/libs/commons-codec-1.6.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/commons-collections-3.2.1.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/commons-io-2.0.1.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/commons-lang-2.6.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/commons-logging-1.1.1.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/cssparser-0.9.5.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/hamcrest-core-1.1.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/hamcrest-library-1.1.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/htmlunit-2.9.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/htmlunit-core-js-2.9.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/httpclient-4.1.3.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/httpcore-4.1.3.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/httpmime-4.1.3.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/nekohtml-1.9.15.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/sac-1.3.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/xalan-2.7.1.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/xercesImpl-2.9.1.jar" todir="test-libs/selenium/libs"/>
-
-            <!-- The following aren't necessary for the code as it is, but will be if WebDriver configuration is changed
-            to use FirefoxDriver instead of HtmlUnitDriver -->
-            <copy file="down/selenium-2.25.0/libs/guava-12.0.jar" todir="test-libs/selenium/libs"/>
-            <copy file="down/selenium-2.25.0/libs/json-20080701.jar" todir="test-libs/selenium/libs"/>
-
+                    <!-- The following aren't necessary for the code as it is, but will be if WebDriver configuration
+                    is changed to use FirefoxDriver instead of HtmlUnitDriver -->
+                    <copy file="down/selenium-2.25.0/libs/guava-12.0.jar" todir="test-libs/selenium/libs"/>
+                    <copy file="down/selenium-2.25.0/libs/json-20080701.jar" todir="test-libs/selenium/libs"/>
+                </sequential>
+            </parallel>
+            <delete dir="down"/>
         </sequential>
     </target>
 </project>
