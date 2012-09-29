@@ -1,0 +1,23 @@
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<link href="../concordion.css" rel="stylesheet" type="text/css" />
+<body>
+    <h1>No se pierde el tiempo</h1>
+
+    <p>
+        Cuando se añade un artículo, la lista de permanecece vacía
+    </p>
+
+    <div class="example">
+		<h3>Ejemplo</h3>
+		
+        <p>
+            Cuando se añade el artículo
+            <b concordion:set="#url">art.culo/interesante.html</b>,
+            la lista está
+            <b concordion:assertEquals="articleListAfterAdding(#url)">vacía</b>
+        </p>
+    </div>
+</body>
+</html>

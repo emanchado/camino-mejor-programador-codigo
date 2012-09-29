@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="NeverRead" default="start" basedir=".">
+    <property name="src/java" value="${basedir}/src/java"/>
+    <property name="src/test-acceptance" value="${basedir}/src/test-acceptance"/>
+    <property name="build" value="${basedir}/build"/>
+    <property name="results" value="${build}/results"/>
+    <property name="build/main" value="${build}/classes/main"/>
+    <property name="build/test-acceptance" value="${build}/classes/test-acceptance"/>
+
+    <path id="main-dependencies">
+        <fileset dir="${basedir}/libs">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="main">
+        <path refid="main-dependencies"/>
+        <pathelement location="${build/main}"/>
+    </path>
+
+    <path id="test-dependencies">
+        <path refid="main"/>
+        <fileset dir="${basedir}/test-libs">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="test">
+        <path refid="test-dependencies"/>
+        <pathelement location="${build/test-acceptance}"/>
+    </path>
+
+    <target name="compile-java" depends="clean">
+        <sequential>
+            <mkdir dir="${build/main}"/>
+            <javac srcdir="${src/java}" destdir="${build/main}" debug="true" source="1.6"
+                   classpathref="main-dependencies" includeantruntime="false"/>
+        </sequential>
+    </target>
+
+    <target name="compile-test-acceptance" depends="compile-java">
+        <sequential>
+            <mkdir dir="${build/test-acceptance}"/>
+            <javac srcdir="${src/test-acceptance}" destdir="${build/test-acceptance}" debug="true" source="1.6"
+                   classpathref="test-dependencies" includeantruntime="false"/>
+        </sequential>
+    </target>
+
+    <target name="produce-report-on-failure" if="test-failure">
+        <junitreport todir="${results}">
+            <fileset dir="${results}" includes="**/*.xml"/>
+            <report format="frames" todir="${results}"/>
+        </junitreport>
+        <fail if="test-failure" message="Tests failed. See ${results}/index.html"/>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+    </target>
+
+    <target name="start" depends="clean, compile-java">
+        <java classname="server.NeverReadServer" fork="true">
+            <classpath refid="main"/>
+        </java>
+    </target>
+
+    <target name="mayberead" depends="clean, compile-java">
+        <java classname="server.MaybeReadServer" fork="true">
+            <classpath refid="main"/>
+        </java>
+    </target>
+
+    <target name="test-acceptance-java" depends="clean, compile-test-acceptance">
+        <mkdir dir="${results}/xml/test-acceptance-java"/>
+        <junit fork="yes" forkmode="once" showoutput="yes" failureproperty="test-failure">
+            <classpath refid="test"/>
+            <batchtest todir="${results}/xml/test-acceptance-java">
+                <fileset dir="${build/test-acceptance}" includes="**/*Test.class" excludes="**/concordion/**"/>
+                <formatter type="xml"/>
+            </batchtest>
+        </junit>
+        <antcall target="produce-report-on-failure"/>
+    </target>
+
+    <target name="test-acceptance-concordion" depends="clean, compile-test-acceptance">
+        <mkdir dir="${results}/xml/test-concordion"/>
+        <mkdir dir="${results}/concordion"/>
+
+        <copy todir="${build/test-acceptance}">
+            <fileset dir="${src/test-acceptance}" includes="**/concordion/**/*.html"/>
+        </copy>
+
+        <junit fork="yes" forkmode="once" showoutput="yes" failureproperty="test-failure">
+            <jvmarg value="-Dconcordion.output.dir=${results}/concordion"/>
+            <classpath refid="test"/>
+            <batchtest todir="${results}/xml/test-concordion">
+                <fileset dir="${build/test-acceptance}" includes="**/concordion/**/*Test.class"/>
+                <formatter type="xml"/>
+            </batchtest>
+        </junit>
+        <antcall target="produce-report-on-failure"/>
+    </target>
+
+    <target name="download-dependencies">
+        <sequential>
+            <mkdir dir="down"/>
+
+            <get src="http://dist.codehaus.org/jetty/jetty-6.1.26/jetty-6.1.26.zip" dest="down/" skipexisting="true"/>
+            <unzip src="down/jetty-6.1.26.zip" dest="down/"/>
+            <copy file="down/jetty-6.1.26/lib/jetty-6.1.26.jar" todir="libs/jetty"/>
+            <copy file="down/jetty-6.1.26/lib/jetty-util-6.1.26.jar" todir="libs/jetty"/>
+            <copy file="down/jetty-6.1.26/lib/servlet-api-2.5-20081211.jar" todir="libs/jetty"/>
+
+            <get src="http://www.concordion.org/dist/1.4.2/concordion-1.4.2.zip" dest="down/" skipexisting="true"/>
+            <unzip src="down/concordion-1.4.2.zip" dest="down/" overwrite="false"/>
+            <copy file="down/concordion-1.4.2/dist/concordion-1.4.2.jar" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/ognl-2.6.9.jar" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/ognl-license.txt" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/xom-1.2.5.jar" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/xom-lgpl.txt" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/xom-license.txt" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/junit-4.8.2.jar" todir="test-libs"/>
+            <copy file="down/concordion-1.4.2/lib/junit-license.html" todir="test-libs"/>
+
+            <!-- Not copying some files that don't seem necessary. Not copying junit-dep-4.10.jar either because
+            we've already copied junit-4.8.2.jar above with concordion. -->
+            <get src="http://selenium.googlecode.com/files/selenium-java-2.25.0.zip" dest="down" skipexisting="true"/>
+            <unzip src="down/selenium-java-2.25.0.zip" dest="down/" overwrite="false"/>
+            <copy file="down/selenium-2.25.0/selenium-java-2.25.0.jar" todir="test-libs/selenium"/>
+            <copy file="down/selenium-2.25.0/selenium-java-2.25.0-srcs.jar" todir="test-libs/selenium"/>
+
+            <copy file="down/selenium-2.25.0/libs/commons-codec-1.6.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/commons-collections-3.2.1.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/commons-io-2.0.1.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/commons-lang-2.6.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/commons-logging-1.1.1.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/cssparser-0.9.5.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/hamcrest-core-1.1.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/hamcrest-library-1.1.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/htmlunit-2.9.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/htmlunit-core-js-2.9.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/httpclient-4.1.3.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/httpcore-4.1.3.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/httpmime-4.1.3.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/nekohtml-1.9.15.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/sac-1.3.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/xalan-2.7.1.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/xercesImpl-2.9.1.jar" todir="test-libs/selenium/libs"/>
+
+            <!-- The following aren't necessary for the code as it is, but will be if WebDriver configuration is changed
+            to use FirefoxDriver instead of HtmlUnitDriver -->
+            <copy file="down/selenium-2.25.0/libs/guava-12.0.jar" todir="test-libs/selenium/libs"/>
+            <copy file="down/selenium-2.25.0/libs/json-20080701.jar" todir="test-libs/selenium/libs"/>
+
+        </sequential>
+    </target>
+</project>

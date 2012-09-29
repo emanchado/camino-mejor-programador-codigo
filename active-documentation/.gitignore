@@ -1,0 +1,8 @@
+*.iws
+build/
+out/
+
+# neverread dependency management
+down/
+libs/
+test-libs/
