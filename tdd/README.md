@@ -18,6 +18,12 @@ Instrucciones
 
         > test
 
+* Además, si desea generar una configuración de IntelliJ Idea para el proyecto (gracias al plugin sbt-idea de Mikko Peltonen), ejecute desde sbt:
+
+        > gen-idea
+
+--------------------------------------------------------------------------
+
 Code examples: TDD
 ==================
 Joaquín Caraballo
@@ -37,3 +43,7 @@ Instructions
 * Once all the depencies have been downloaded, from sbt, run the tests
 
         > test
+
+* Also, if you would like to generate an IntelliJ Idea configuration for the project (using Mikko Peltonen's plugin sbt-idea), run from sbt:
+
+        > gen-idea
