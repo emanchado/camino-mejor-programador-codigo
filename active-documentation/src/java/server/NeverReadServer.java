@@ -27,10 +27,10 @@ public class NeverReadServer implements App {
                         "</head>\n" +
                         "<form>\n" +
                         "<input type=\"text\" name=\"url\"/>\n" +
-                        "<input type=\"submit\" value=\"agregar\"/>\n" +
+                        "<input type=\"submit\" value=\"add\"/>\n" +
                         "</form>\n" +
                         "<br/>\n" +
-                        "<h2>Artículos por leer</h2>\n" +
+                        "<h2>Unread articles</h2>\n" +
                         "<ul>\n" +
 //                        "<li>Chomsky 9/11</li>\n" +
                         "</ul>\n" +

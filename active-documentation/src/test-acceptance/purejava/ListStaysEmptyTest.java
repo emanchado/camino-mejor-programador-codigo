@@ -12,13 +12,13 @@ import server.NeverReadServer;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class ListaPermaneceVaciaTest {
+public class ListStaysEmptyTest {
     private WebDriver webDriver;
     private NeverReadServer neverread;
 
     @Test
     public void articleListStaysEmptyWhenAddingNewArticle() {
-        webDriver.findElement(By.name("url")).sendKeys("art.culo/interesante.html", Keys.ENTER);
+        webDriver.findElement(By.name("url")).sendKeys("interesting/article.html", Keys.ENTER);
         assertThat(webDriver.findElements(By.cssSelector("li")).size(), is(0));
     }
 

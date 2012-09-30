@@ -12,7 +12,7 @@ import server.NeverReadServer;
 
 import java.util.List;
 
-public class ListaPermaneceVaciaTest extends ConcordionTestCase {
+public class ListStaysEmptyTest extends ConcordionTestCase {
     private WebDriver webDriver;
     private NeverReadServer neverread;
 
@@ -25,15 +25,14 @@ public class ListaPermaneceVaciaTest extends ConcordionTestCase {
     }
 
     private static String convertListOfArticlesToString(List<WebElement> pendingArticles) {
-        if (pendingArticles.isEmpty()) {
-            return "vacía";
-        } else {
+        if (pendingArticles.isEmpty()) return "empty";
+        else {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(pendingArticles.get(0).getText());
 
-            for (int i = 1; i < pendingArticles.size(); i++) {
+            for (int i = 1; i < pendingArticles.size(); i++)
                 stringBuilder.append(", ").append(pendingArticles.get(i).getText());
-            }
+
             return stringBuilder.toString();
         }
     }

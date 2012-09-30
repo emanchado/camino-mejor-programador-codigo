@@ -43,11 +43,11 @@ public class MaybeReadServer implements App {
                         "</head>\n" +
                         "<form onsubmit=\"addElement(); return false;\">\n" +
                         "    <input type=\"text\" id=\"url\" name=\"url\"/>\n" +
-                        "    <input type=\"submit\" value=\"agregar\"/>\n" +
+                        "    <input type=\"submit\" value=\"add\"/>\n" +
                         "</form>\n" +
                         "<br/>\n" +
                         "\n" +
-                        "<h2>Artículos por leer</h2>\n" +
+                        "<h2>Unread articles</h2>\n" +
                         "<ul id=\"articles\">\n" +
                         "</ul>\n" +
                         "</html>\n"

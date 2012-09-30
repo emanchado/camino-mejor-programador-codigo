@@ -7,8 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static concordion.Functional.collect;
@@ -40,14 +38,6 @@ public class NeverReadDriver {
         WebDriver driver = new HtmlUnitDriver();
         driver.get(url);
         return driver;
-    }
-
-    private static List<String> stringToArticles(String listOfArticlesAsString) {
-        if ("vacía".equals(listOfArticlesAsString)) {
-            return new ArrayList<String>();
-        } else {
-            return Arrays.asList(listOfArticlesAsString.split(","));
-        }
     }
 
     private static List<String> webElementsToTheirTexts(List<WebElement> pendingArticles) {
