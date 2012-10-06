@@ -3,21 +3,21 @@
 
 <link href="../concordion.css" rel="stylesheet" type="text/css" />
 <body>
-    <h1>The List Stays Empty</h1>
+  <h1>The List Stays Empty</h1>
 
-    <p>
-        When an article is added, the list of unread articles stays empty
-    </p>
+  <p>
+    When an article is added, the list of unread articles stays empty
+  </p>
 
-    <div class="example">
-		<h3>Example</h3>
-		
-        <p>
-            When the article
-            <b concordion:set="#url">interesting/article.html</b>
-            is added, the list of unread articles stays
-            <b concordion:assertEquals="articleListAfterAdding(#url)">empty</b>
-        </p>
-    </div>
+  <div class="example">
+  <h3>Example</h3>
+
+  <p>
+    When the article
+    <b concordion:set="#url">interesting/article.html</b>
+    is added, the list of unread articles stays
+    <b concordion:assertEquals="articleListAfterAdding(#url)">empty</b>
+  </p>
+</div>
 </body>
 </html>
