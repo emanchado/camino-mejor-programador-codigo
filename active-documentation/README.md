@@ -6,7 +6,7 @@ Joaquín Caraballo
 * Java (probado con OpenJDK IcedTea7 2.0)
 * Ant (probado con 1.8.2)
 
-##Instructions
+##Instrucciones
 
 * Descargue las dependencias con:
 
