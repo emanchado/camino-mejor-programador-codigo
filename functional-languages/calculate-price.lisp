@@ -1,0 +1,11 @@
+(defun calculate-price (cost nitems limit percent-tax)
+  (let* ((total-price (* cost nitems))
+         (tax         (* total-price (/ percent-tax 100))))
+    (if (> total-price limit)
+      (+ total-price tax)
+      total-price)))
+
+(print (calculate-price 50 4 250 15))
+(print (calculate-price 50 4 100 15))
+(print (calculate-price 50 4 200 30))
+(print (calculate-price 50 4 199 30))
