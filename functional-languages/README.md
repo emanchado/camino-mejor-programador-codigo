@@ -5,9 +5,6 @@ Esteban Manchado Velázquez
 Requisitos técnicos
 -------------------
 
-The examples in this article are written in different languages. The
-following interpreters have been used to test the code:
-
 Los ejemplos de este artículo están escritos en diferentes
 lenguajes. Se han usado los siguientes intérpretes para probar el
 código:
